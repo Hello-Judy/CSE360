@@ -9,7 +9,7 @@ sensor.set_framesize(sensor.HQVGA)
 sensor.skip_frames(time=2000)
 sensor.set_vflip(True)
 sensor.set_hmirror(True)
-thresholdsGreenBall = (0, 70, -128, -14, -99, 127)
+thresholdsRedBall = (22, 92, 86, 27, -32, 127)
 thresholdsYellowBall = (35, 100, -128, -2, 21, 127)
 def calculate_duck_position(u, s_b):
         m_u = 0.136
@@ -61,7 +61,7 @@ while True:
     clock.tick()
     img = sensor.snapshot()
     print(clock.fps())
-    blobs = img.find_blobs([thresholdsGreenBall, thresholdsYellowBall], area_threshold=2500, merge=True)
+    blobs = img.find_blobs([thresholdsRedBall, thresholdsYellowBall], area_threshold=200, merge=True)
     color_is_detected = False
     max_blob = None
     max_pixels = 0
@@ -102,45 +102,3 @@ while True:
     print(messageToSend)
     IBus_message(messageToSend)
     refreshIbusConnection()
-#while True:
-#    clock.tick()
-#    img = sensor.snapshot()
-#    print(clock.fps())
-#    blobs = img.find_blobs([thresholdsGreenBall, thresholdsYellowBall], area_threshold=2500, merge=True)
-#    max_area = 0  # 用于存储最大blob的面积
-#    max_blob = None  # 用于存储最大blob的对象
-
-#    for blob in blobs:
-#        if blob.area() > max_area:
-#            max_area = blob.area()
-#            max_blob = blob
-
-#    if max_blob:
-#        # 当存在最大blob时，进行处理
-#        img.draw_rectangle(max_blob.rect(), color=(0,255,0))
-#        img.draw_cross(max_blob.cx(), max_blob.cy(), color=(0,255,0))
-#        x = max_blob.cx()
-#        y = max_blob.cy()
-#        w = max_blob.w()
-#        height = max_blob.h()
-#        print("Max Blob Center (x, y): ({}, {}) Size: {} Width: {} Height: {}".format(x, y, max_area, w, height))
-#        color_is_detected = True
-#        b_LED.on()
-#        g_LED.off()
-#        r_LED.off()
-#    else:
-#        color_is_detected = False
-#        g_LED.on()
-#        r_LED.off()
-#        b_LED.off()
-
-#    flag = 1 if color_is_detected else 0
-#    pixels_x = x
-#    pixels_y = y
-#    pixels_w = w
-#    pixels_h = height
-
-#    messageToSend = [flag, pixels_x, pixels_y, pixels_w, pixels_h]
-#    print("Message to send:", messageToSend)
-#    IBus_message(messageToSend)
-#    refreshIbusConnection()
