@@ -10,7 +10,6 @@ sensor.skip_frames(time=2000)
 sensor.set_vflip(True)
 sensor.set_hmirror(True)
 thresholdsRedBall = (22, 92, 86, 27, -32, 127)
-thresholdsYellowBall = (35, 100, -128, -2, 21, 127)
 def calculate_duck_position(u, s_b):
         m_u = 0.136
         c_u = -20.4
@@ -61,7 +60,7 @@ while True:
     clock.tick()
     img = sensor.snapshot()
     print(clock.fps())
-    blobs = img.find_blobs([thresholdsRedBall, thresholdsYellowBall], area_threshold=200, merge=True)
+    blobs = img.find_blobs([thresholdsRedBall], area_threshold=200, merge=True)
     color_is_detected = False
     max_blob = None
     max_pixels = 0
